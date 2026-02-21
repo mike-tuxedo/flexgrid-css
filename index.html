@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +16,12 @@
 
 <main>
   <h1>Flex Grid CSS</h1>
-  <p class="subtitle">Zentrierte, responsive Mehrspalten-Layouts mit Flexbox + Container Queries.<br>Keine JS-Abhängigkeit. Kein Grid-Hack.</p>
+  <p class="subtitle">Centered, responsive multi-column layouts with Flexbox + Container Queries.<br>No JS dependency. No grid hacks.</p>
 
-  <!-- Beispiel 1 -->
+  <!-- Example 1 -->
   <section>
-    <h2>8 Karten — <code>fg fg-6321 fg-gap20 fg-min200</code></h2>
-    <p class="info">6 Spalten max, min-width 200px. Letzte Zeile immer zentriert.</p>
+    <h2>8 cards — <code>fg fg-6321 fg-gap20 fg-min200</code></h2>
+    <p class="info">6 columns max, min-width 200px. Last row always centered.</p>
     <div class="fg fg-6321 fg-gap20 fg-min200">
       <div class="card"><strong>1</strong>Alpha</div>
       <div class="card"><strong>2</strong>Bravo</div>
@@ -34,36 +34,36 @@
     </div>
   </section>
 
-  <!-- Beispiel 2 -->
+  <!-- Example 2 -->
   <section>
-    <h2>5 Karten — <code>fg fg-6321 fg-gap40 fg-min300</code></h2>
-    <p class="info">Grösserer Gap, grössere Mindestbreite.</p>
+    <h2>5 cards — <code>fg fg-6321 fg-gap40 fg-min300</code></h2>
+    <p class="info">Larger gap and min-width.</p>
     <div class="fg fg-6321 fg-gap40 fg-min300">
-      <div class="card"><strong>A</strong>Erste</div>
-      <div class="card"><strong>B</strong>Zweite</div>
-      <div class="card"><strong>C</strong>Dritte</div>
-      <div class="card"><strong>D</strong>Vierte</div>
-      <div class="card"><strong>E</strong>Fünfte</div>
+      <div class="card"><strong>A</strong>First</div>
+      <div class="card"><strong>B</strong>Second</div>
+      <div class="card"><strong>C</strong>Third</div>
+      <div class="card"><strong>D</strong>Fourth</div>
+      <div class="card"><strong>E</strong>Fifth</div>
     </div>
   </section>
 
-  <!-- Beispiel 3 -->
+  <!-- Example 3 -->
   <section>
-    <h2>3 Karten — <code>fg fg-6321 fg-gap20 fg-min300</code></h2>
+    <h2>3 cards — <code>fg fg-6321 fg-gap20 fg-min300</code></h2>
     <div class="fg fg-6321 fg-gap20 fg-min300">
-      <div class="card"><strong>X</strong>Eins</div>
-      <div class="card"><strong>Y</strong>Zwei</div>
-      <div class="card"><strong>Z</strong>Drei</div>
+      <div class="card"><strong>X</strong>One</div>
+      <div class="card"><strong>Y</strong>Two</div>
+      <div class="card"><strong>Z</strong>Three</div>
     </div>
   </section>
 
-  <!-- Beispiel 4: Verschachtelt -->
+  <!-- Example 4: Nested -->
   <section>
-    <h2>Verschachtelt — Container Queries in Aktion</h2>
-    <p class="info">Äusserer Container begrenzt Breite → innere Grids passen sich an.</p>
+    <h2>Nested — Container Queries in action</h2>
+    <p class="info">Outer container limits width — inner grids adapt automatically.</p>
     <div class="fg fg-6321 fg-gap20 fg-min300">
       <div class="nested-outer">
-        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="label">Inner grid — fg-gap10 fg-min100</div>
         <div class="fg fg-6321 fg-gap10 fg-min100">
           <div class="card"><strong>1</strong>Nested</div>
           <div class="card"><strong>2</strong>Nested</div>
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="nested-outer">
-        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="label">Inner grid — fg-gap10 fg-min100</div>
         <div class="fg fg-6321 fg-gap10 fg-min100">
           <div class="card"><strong>A</strong>Nested</div>
           <div class="card"><strong>B</strong>Nested</div>
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="nested-outer">
-        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="label">Inner grid — fg-gap10 fg-min100</div>
         <div class="fg fg-6321 fg-gap10 fg-min100">
           <div class="card"><strong>I</strong>Nested</div>
           <div class="card"><strong>II</strong>Nested</div>
@@ -92,10 +92,10 @@
     </div>
   </section>
 
-  <!-- Beispiel 5 -->
+  <!-- Example 5 -->
   <section>
-    <h2>12 Karten — <code>fg fg-6321 fg-gap10 fg-min100</code></h2>
-    <p class="info">Viele kleine Elemente zeigen das volle 6-Spalten-Layout.</p>
+    <h2>12 cards — <code>fg fg-6321 fg-gap10 fg-min100</code></h2>
+    <p class="info">Many small items show the full 6-column layout.</p>
     <div class="fg fg-6321 fg-gap10 fg-min100">
       <div class="card"><strong>01</strong></div>
       <div class="card"><strong>02</strong></div>

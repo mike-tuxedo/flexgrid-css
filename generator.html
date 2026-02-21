@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -157,12 +157,16 @@
   min-height: 300px;
 }
 
-.stat {
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
   font-size: 0.8rem;
   color: #555580;
 }
 
-.stat b { color: #e94560; }
+.stats b { color: #e94560; }
+.stats .sep { color: #2a2a4a; }
 </style>
 </head>
 <body>
@@ -174,20 +178,20 @@
 
 <main>
   <h1>Container Query Generator</h1>
-  <p class="subtitle">Generiert die Container Queries für beliebige Pattern/Gap/Min-Kombinationen.</p>
+  <p class="subtitle">Generates container queries for any pattern/gap/min-width combination.</p>
 
   <div class="generator">
     <!-- Config Panel -->
     <div class="panel">
-      <h3>Konfiguration</h3>
+      <h3>Configuration</h3>
 
       <div class="field">
-        <label>Pattern (Spalten-Kaskade, kommasepariert)</label>
+        <label>Pattern (column cascade, comma-separated)</label>
         <input type="text" id="pattern" value="6,3,2,1">
       </div>
 
       <div class="field">
-        <label>Klassen-Name (z.B. fg-6321)</label>
+        <label>Class name (e.g. fg-6321)</label>
         <input type="text" id="className" value="fg-6321">
       </div>
 
@@ -204,7 +208,7 @@
       </div>
 
       <div class="field">
-        <label>Min-Widths (px)</label>
+        <label>Min-widths (px)</label>
         <div class="chip-group" id="minChips">
           <label><input type="checkbox" value="100" checked><span>100</span></label>
           <label><input type="checkbox" value="150"><span>150</span></label>
@@ -216,23 +220,23 @@
       </div>
 
       <div class="field">
-        <label>Base-Styles mit ausgeben?</label>
+        <label>Include base styles?</label>
         <select id="includeBase">
-          <option value="yes">Ja — komplettes CSS</option>
-          <option value="no">Nein — nur Container Queries</option>
+          <option value="yes">Yes — complete CSS</option>
+          <option value="no">No — container queries only</option>
         </select>
       </div>
 
-      <button class="btn" onclick="generate()">CSS generieren</button>
+      <button class="btn" onclick="generate()">Generate CSS</button>
     </div>
 
     <!-- Output -->
     <div class="output-wrap">
       <div class="output-header">
-        <h3>Generiertes CSS</h3>
-        <button class="copy-btn" onclick="copyOutput(this)">Kopieren</button>
+        <h3>Generated CSS</h3>
+        <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
       </div>
-      <p class="stat" id="stat"></p>
+      <div class="stats" id="stats"></div>
       <div id="output"></div>
     </div>
   </div>
@@ -243,6 +247,51 @@ function getCheckedValues(id) {
   return [...document.querySelectorAll('#' + id + ' input:checked')].map(c => Number(c.value));
 }
 
+function gzipSize(str) {
+  // DEFLATE estimation: measure redundancy via compression ratio heuristic
+  // Container queries are highly repetitive, so they compress very well.
+  // We simulate this by counting unique vs repeated patterns.
+  const raw = new TextEncoder().encode(str);
+  const rawLen = raw.length;
+
+  if (rawLen === 0) return 0;
+
+  // Byte frequency entropy estimation
+  const freq = new Uint32Array(256);
+  for (const b of raw) freq[b]++;
+
+  let entropy = 0;
+  for (let i = 0; i < 256; i++) {
+    if (freq[i] === 0) continue;
+    const p = freq[i] / rawLen;
+    entropy -= p * Math.log2(p);
+  }
+
+  // Entropy gives bits per byte. DEFLATE also exploits repeated substrings,
+  // so actual compression is better than pure entropy. Apply a factor for
+  // the LZ77 back-reference gain on repetitive CSS.
+  const entropyRatio = entropy / 8;
+  const lz77Factor = 0.75; // CSS container queries are very repetitive
+  const estimated = Math.ceil(rawLen * entropyRatio * lz77Factor) + 20; // +20 for gzip header/footer
+
+  return Math.max(estimated, 20);
+}
+
+function minifyCSS(css) {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, '')  // remove comments
+    .replace(/\n/g, '')                 // remove newlines
+    .replace(/\s{2,}/g, ' ')           // collapse whitespace
+    .replace(/\s*([{}:;,>*])\s*/g, '$1') // remove space around syntax chars
+    .replace(/;}/g, '}')               // remove last semicolons
+    .trim();
+}
+
+function formatKB(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  return (bytes / 1024).toFixed(2) + ' KB';
+}
+
 function generate() {
   const steps = document.getElementById('pattern').value.split(',').map(s => Number(s.trim())).filter(n => n > 0);
   const name = document.getElementById('className').value.trim() || 'fg-6321';
@@ -251,8 +300,8 @@ function generate() {
   const includeBase = document.getElementById('includeBase').value === 'yes';
 
   if (steps.length < 2 || gaps.length === 0 || mins.length === 0) {
-    document.getElementById('output').textContent = '/* Mindestens 2 Pattern-Stufen, 1 Gap und 1 Min-Width nötig */';
-    document.getElementById('stat').innerHTML = '';
+    document.getElementById('output').textContent = '/* Need at least 2 pattern steps, 1 gap and 1 min-width */';
+    document.getElementById('stats').innerHTML = '';
     return;
   }
 
@@ -309,20 +358,33 @@ function generate() {
     queryCount++;
   }
 
-  document.getElementById('output').textContent = lines.join('\n');
-  document.getElementById('stat').innerHTML =
-    '<b>' + queryCount + '</b> Container Queries — ' +
-    gaps.length + ' Gaps &times; ' + mins.length + ' Mins &times; ' +
-    (steps.length - 1) + ' Übergänge';
+  const cssText = lines.join('\n');
+  const minified = minifyCSS(cssText);
+  const rawBytes = new TextEncoder().encode(cssText).length;
+  const minBytes = new TextEncoder().encode(minified).length;
+  const gzBytes = gzipSize(minified);
+
+  document.getElementById('output').textContent = cssText;
+  document.getElementById('stats').innerHTML =
+    '<b>' + queryCount + '</b> container queries' +
+    ' <span class="sep">|</span> ' +
+    gaps.length + ' gaps &times; ' + mins.length + ' mins &times; ' +
+    (steps.length - 1) + ' transitions' +
+    ' <span class="sep">|</span> ' +
+    '<b>' + formatKB(rawBytes) + '</b> raw' +
+    ' <span class="sep">|</span> ' +
+    '<b>' + formatKB(minBytes) + '</b> minified' +
+    ' <span class="sep">|</span> ' +
+    '~<b>' + formatKB(gzBytes) + '</b> gzip';
 }
 
 function copyOutput(btn) {
   const text = document.getElementById('output').textContent;
   navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Kopiert!';
+    btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = 'Kopieren';
+      btn.textContent = 'Copy';
       btn.classList.remove('copied');
     }, 2000);
   });
