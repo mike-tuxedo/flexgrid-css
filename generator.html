@@ -206,7 +206,8 @@
   <!-- Output -->
   <div class="output-header">
     <h3>Generated CSS</h3>
-    <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
+    <button class="copy-btn" onclick="copyOutput(this, false)">Copy</button>
+    <button class="copy-btn" onclick="copyOutput(this, true)">Copy minified</button>
   </div>
   <div class="stats" id="stats"></div>
   <div id="output"></div>
@@ -356,13 +357,15 @@ function generate() {
     '~<b>' + formatKB(gzBytes) + '</b> gzip';
 }
 
-function copyOutput(btn) {
+function copyOutput(btn, minified) {
   const text = document.getElementById('output').textContent;
-  navigator.clipboard.writeText(text).then(() => {
+  const content = minified ? minifyCSS(text) : text;
+  const label = minified ? 'Copy minified' : 'Copy';
+  navigator.clipboard.writeText(content).then(() => {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = 'Copy';
+      btn.textContent = label;
       btn.classList.remove('copied');
     }, 2000);
   });
