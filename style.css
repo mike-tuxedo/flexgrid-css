@@ -1,0 +1,104 @@
+/* === Shared Site Styles === */
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0e0e1a;
+  color: #d4d4e0;
+  line-height: 1.5;
+}
+
+nav {
+  display: flex;
+  gap: 2px;
+  background: #16162a;
+  padding: 0 1rem;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+nav a {
+  padding: 0.75rem 1.25rem;
+  color: #8888bb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+nav a:hover { color: #c4c4f0; }
+nav a.active { color: #e94560; border-bottom-color: #e94560; }
+
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #6a6a90;
+  margin-bottom: 2.5rem;
+  font-size: 0.9rem;
+}
+
+section { margin-bottom: 3rem; }
+
+h2 {
+  font-size: 1rem;
+  color: #8888cc;
+  margin-bottom: 0.25rem;
+}
+
+h2 code {
+  font-size: 0.8rem;
+  background: #1a1a35;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  color: #aaaadd;
+}
+
+.info {
+  font-size: 0.8rem;
+  color: #555580;
+  margin-bottom: 0.75rem;
+}
+
+/* === Card === */
+.card {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.card strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+  color: #e94560;
+}
+
+/* === Nested === */
+.nested-outer {
+  background: #0f3460;
+  border: 2px dashed #e94560;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.nested-outer > .label {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: #e94560;
+}

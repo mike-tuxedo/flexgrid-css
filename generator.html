@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flex Grid CSS — Generator</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* === Generator UI === */
+.generator {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .generator { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 1rem;
+}
+
+.panel h3 {
+  font-size: 0.85rem;
+  color: #8888cc;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field {
+  margin-bottom: 1.25rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.8rem;
+  color: #6a6a90;
+  margin-bottom: 0.4rem;
+}
+
+.field input[type="text"],
+.field select {
+  width: 100%;
+  background: #0e0e1a;
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  color: #d4d4e0;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.field select { cursor: pointer; }
+.field input:focus, .field select:focus { outline: none; border-color: #e94560; }
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-group label {
+  display: inline-block;
+  margin: 0;
+}
+
+.chip-group input[type="checkbox"] { display: none; }
+
+.chip-group span {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  background: #0e0e1a;
+  border: 1px solid #2a2a4a;
+  color: #6a6a90;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-group input:checked + span {
+  background: #2a1a30;
+  border-color: #e94560;
+  color: #e94560;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:hover { background: #d63050; }
+
+/* === Output === */
+.output-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.output-header h3 {
+  font-size: 0.85rem;
+  color: #8888cc;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.copy-btn {
+  padding: 0.35rem 0.9rem;
+  background: #1a1a35;
+  color: #8888bb;
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy-btn:hover { border-color: #e94560; color: #e94560; }
+.copy-btn.copied { border-color: #40c057; color: #40c057; }
+
+#output {
+  background: #0e0e1a;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 1.25rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #b0b0d0;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+  min-height: 300px;
+}
+
+.stat {
+  font-size: 0.8rem;
+  color: #555580;
+}
+
+.stat b { color: #e94560; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Demo</a>
+  <a href="generator.html" class="active">Generator</a>
+</nav>
+
+<main>
+  <h1>Container Query Generator</h1>
+  <p class="subtitle">Generiert die Container Queries für beliebige Pattern/Gap/Min-Kombinationen.</p>
+
+  <div class="generator">
+    <!-- Config Panel -->
+    <div class="panel">
+      <h3>Konfiguration</h3>
+
+      <div class="field">
+        <label>Pattern (Spalten-Kaskade, kommasepariert)</label>
+        <input type="text" id="pattern" value="6,3,2,1">
+      </div>
+
+      <div class="field">
+        <label>Klassen-Name (z.B. fg-6321)</label>
+        <input type="text" id="className" value="fg-6321">
+      </div>
+
+      <div class="field">
+        <label>Gaps (px)</label>
+        <div class="chip-group" id="gapChips">
+          <label><input type="checkbox" value="5"><span>5</span></label>
+          <label><input type="checkbox" value="10" checked><span>10</span></label>
+          <label><input type="checkbox" value="20" checked><span>20</span></label>
+          <label><input type="checkbox" value="40" checked><span>40</span></label>
+          <label><input type="checkbox" value="60"><span>60</span></label>
+          <label><input type="checkbox" value="80"><span>80</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Min-Widths (px)</label>
+        <div class="chip-group" id="minChips">
+          <label><input type="checkbox" value="100" checked><span>100</span></label>
+          <label><input type="checkbox" value="150"><span>150</span></label>
+          <label><input type="checkbox" value="200" checked><span>200</span></label>
+          <label><input type="checkbox" value="250"><span>250</span></label>
+          <label><input type="checkbox" value="300" checked><span>300</span></label>
+          <label><input type="checkbox" value="400"><span>400</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Base-Styles mit ausgeben?</label>
+        <select id="includeBase">
+          <option value="yes">Ja — komplettes CSS</option>
+          <option value="no">Nein — nur Container Queries</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="generate()">CSS generieren</button>
+    </div>
+
+    <!-- Output -->
+    <div class="output-wrap">
+      <div class="output-header">
+        <h3>Generiertes CSS</h3>
+        <button class="copy-btn" onclick="copyOutput(this)">Kopieren</button>
+      </div>
+      <p class="stat" id="stat"></p>
+      <div id="output"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+function getCheckedValues(id) {
+  return [...document.querySelectorAll('#' + id + ' input:checked')].map(c => Number(c.value));
+}
+
+function generate() {
+  const steps = document.getElementById('pattern').value.split(',').map(s => Number(s.trim())).filter(n => n > 0);
+  const name = document.getElementById('className').value.trim() || 'fg-6321';
+  const gaps = getCheckedValues('gapChips');
+  const mins = getCheckedValues('minChips');
+  const includeBase = document.getElementById('includeBase').value === 'yes';
+
+  if (steps.length < 2 || gaps.length === 0 || mins.length === 0) {
+    document.getElementById('output').textContent = '/* Mindestens 2 Pattern-Stufen, 1 Gap und 1 Min-Width nötig */';
+    document.getElementById('stat').innerHTML = '';
+    return;
+  }
+
+  const lines = [];
+
+  if (includeBase) {
+    lines.push('/* === Flex Grid CSS === */');
+    lines.push('.fg { display: flex; justify-content: center; flex-wrap: wrap; container-type: inline-size; gap: var(--gap, 0px); }');
+    lines.push('.fg > * { --items: 1; width: max(var(--min, 0px), calc(100% / var(--items) - (var(--items) - 1) * var(--gap, 0px) / var(--items))); max-width: 100%; }');
+    lines.push('');
+    lines.push('.' + name + ' > * { --items: ' + steps[0] + '; }');
+    lines.push('');
+
+    for (const g of gaps) {
+      lines.push('.fg-gap' + g + ' { --gap: ' + g + 'px; }');
+    }
+    lines.push('');
+
+    for (const m of mins) {
+      lines.push('.fg-min' + m + ' > * { --min: ' + m + 'px; }');
+    }
+    lines.push('');
+  }
+
+  // Collect all breakpoints
+  const entries = [];
+  for (let i = 0; i < steps.length - 1; i++) {
+    const fromCols = steps[i];
+    const toCols = steps[i + 1];
+
+    for (const gap of gaps) {
+      for (const min of mins) {
+        const bp = fromCols * min + (fromCols - 1) * gap - 1;
+        entries.push({ bp, gap, min, toCols, fromCols });
+      }
+    }
+  }
+
+  // Sort by breakpoint descending
+  entries.sort((a, b) => b.bp - a.bp);
+
+  // Group by transition for comments
+  let lastTransition = '';
+  let queryCount = 0;
+
+  for (const e of entries) {
+    const transition = e.fromCols + ' -> ' + e.toCols;
+    if (transition !== lastTransition) {
+      if (lastTransition) lines.push('');
+      lines.push('/* ' + transition + ' */');
+      lastTransition = transition;
+    }
+    lines.push('@container (max-inline-size: ' + e.bp + 'px) { .' + name + '.fg-gap' + e.gap + '.fg-min' + e.min + ' > * { --items: ' + e.toCols + '; } }');
+    queryCount++;
+  }
+
+  document.getElementById('output').textContent = lines.join('\n');
+  document.getElementById('stat').innerHTML =
+    '<b>' + queryCount + '</b> Container Queries — ' +
+    gaps.length + ' Gaps &times; ' + mins.length + ' Mins &times; ' +
+    (steps.length - 1) + ' Übergänge';
+}
+
+function copyOutput(btn) {
+  const text = document.getElementById('output').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Kopiert!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Kopieren';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Generate on load
+generate();
+
+// Auto-regenerate on any config change
+document.querySelectorAll('.panel input, .panel select').forEach(el => {
+  el.addEventListener('change', generate);
+  el.addEventListener('input', generate);
+});
+</script>
+
+</body>
+</html>

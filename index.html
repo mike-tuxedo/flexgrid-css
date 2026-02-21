@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flex Grid CSS — Demo</title>
+<link rel="stylesheet" href="flexgrid.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="active">Demo</a>
+  <a href="generator.html">Generator</a>
+</nav>
+
+<main>
+  <h1>Flex Grid CSS</h1>
+  <p class="subtitle">Zentrierte, responsive Mehrspalten-Layouts mit Flexbox + Container Queries.<br>Keine JS-Abhängigkeit. Kein Grid-Hack.</p>
+
+  <!-- Beispiel 1 -->
+  <section>
+    <h2>8 Karten — <code>fg fg-6321 fg-gap20 fg-min200</code></h2>
+    <p class="info">6 Spalten max, min-width 200px. Letzte Zeile immer zentriert.</p>
+    <div class="fg fg-6321 fg-gap20 fg-min200">
+      <div class="card"><strong>1</strong>Alpha</div>
+      <div class="card"><strong>2</strong>Bravo</div>
+      <div class="card"><strong>3</strong>Charlie</div>
+      <div class="card"><strong>4</strong>Delta</div>
+      <div class="card"><strong>5</strong>Echo</div>
+      <div class="card"><strong>6</strong>Foxtrot</div>
+      <div class="card"><strong>7</strong>Golf</div>
+      <div class="card"><strong>8</strong>Hotel</div>
+    </div>
+  </section>
+
+  <!-- Beispiel 2 -->
+  <section>
+    <h2>5 Karten — <code>fg fg-6321 fg-gap40 fg-min300</code></h2>
+    <p class="info">Grösserer Gap, grössere Mindestbreite.</p>
+    <div class="fg fg-6321 fg-gap40 fg-min300">
+      <div class="card"><strong>A</strong>Erste</div>
+      <div class="card"><strong>B</strong>Zweite</div>
+      <div class="card"><strong>C</strong>Dritte</div>
+      <div class="card"><strong>D</strong>Vierte</div>
+      <div class="card"><strong>E</strong>Fünfte</div>
+    </div>
+  </section>
+
+  <!-- Beispiel 3 -->
+  <section>
+    <h2>3 Karten — <code>fg fg-6321 fg-gap20 fg-min300</code></h2>
+    <div class="fg fg-6321 fg-gap20 fg-min300">
+      <div class="card"><strong>X</strong>Eins</div>
+      <div class="card"><strong>Y</strong>Zwei</div>
+      <div class="card"><strong>Z</strong>Drei</div>
+    </div>
+  </section>
+
+  <!-- Beispiel 4: Verschachtelt -->
+  <section>
+    <h2>Verschachtelt — Container Queries in Aktion</h2>
+    <p class="info">Äusserer Container begrenzt Breite → innere Grids passen sich an.</p>
+    <div class="fg fg-6321 fg-gap20 fg-min300">
+      <div class="nested-outer">
+        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="fg fg-6321 fg-gap10 fg-min100">
+          <div class="card"><strong>1</strong>Nested</div>
+          <div class="card"><strong>2</strong>Nested</div>
+          <div class="card"><strong>3</strong>Nested</div>
+          <div class="card"><strong>4</strong>Nested</div>
+          <div class="card"><strong>5</strong>Nested</div>
+        </div>
+      </div>
+      <div class="nested-outer">
+        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="fg fg-6321 fg-gap10 fg-min100">
+          <div class="card"><strong>A</strong>Nested</div>
+          <div class="card"><strong>B</strong>Nested</div>
+          <div class="card"><strong>C</strong>Nested</div>
+          <div class="card"><strong>D</strong>Nested</div>
+        </div>
+      </div>
+      <div class="nested-outer">
+        <div class="label">Inneres Grid — fg-gap10 fg-min100</div>
+        <div class="fg fg-6321 fg-gap10 fg-min100">
+          <div class="card"><strong>I</strong>Nested</div>
+          <div class="card"><strong>II</strong>Nested</div>
+          <div class="card"><strong>III</strong>Nested</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beispiel 5 -->
+  <section>
+    <h2>12 Karten — <code>fg fg-6321 fg-gap10 fg-min100</code></h2>
+    <p class="info">Viele kleine Elemente zeigen das volle 6-Spalten-Layout.</p>
+    <div class="fg fg-6321 fg-gap10 fg-min100">
+      <div class="card"><strong>01</strong></div>
+      <div class="card"><strong>02</strong></div>
+      <div class="card"><strong>03</strong></div>
+      <div class="card"><strong>04</strong></div>
+      <div class="card"><strong>05</strong></div>
+      <div class="card"><strong>06</strong></div>
+      <div class="card"><strong>07</strong></div>
+      <div class="card"><strong>08</strong></div>
+      <div class="card"><strong>09</strong></div>
+      <div class="card"><strong>10</strong></div>
+      <div class="card"><strong>11</strong></div>
+      <div class="card"><strong>12</strong></div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
