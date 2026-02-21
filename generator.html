@@ -6,119 +6,110 @@
 <title>Flex Grid CSS — Generator</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* === Generator UI === */
-.generator {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-@media (max-width: 800px) {
-  .generator { grid-template-columns: 1fr; }
-}
-
-.panel {
-  background: #16162a;
-  border: 1px solid #2a2a4a;
+/* === Config Bar === */
+.config-bar {
+  background: linear-gradient(135deg, #16213e 0%, #1a2a4a 100%);
+  border: 1px solid #2a3a5a;
   border-radius: 12px;
-  padding: 1.5rem;
-  position: sticky;
-  top: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  align-items: end;
 }
 
-.panel h3 {
-  font-size: 0.85rem;
-  color: #8888cc;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+@media (max-width: 900px) {
+  .config-bar { grid-template-columns: repeat(2, 1fr); }
 }
 
-.field {
-  margin-bottom: 1.25rem;
+@media (max-width: 500px) {
+  .config-bar { grid-template-columns: 1fr; }
 }
 
 .field label {
   display: block;
   font-size: 0.8rem;
-  color: #6a6a90;
+  color: #7a8aaa;
   margin-bottom: 0.4rem;
 }
 
-.field input[type="text"],
-.field select {
+.field input {
   width: 100%;
-  background: #0e0e1a;
-  border: 1px solid #2a2a4a;
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
+  background: #0a0f1e;
+  border: 1px solid #2a3a5a;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
   color: #d4d4e0;
   font-family: monospace;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  transition: border-color 0.15s;
 }
 
-.field select { cursor: pointer; }
-.field input:focus, .field select:focus { outline: none; border-color: #e94560; }
+.field input:focus {
+  outline: none;
+  border-color: #40c8c4;
+  box-shadow: 0 0 0 2px rgba(64, 200, 196, 0.15);
+}
 
-.chip-group {
+/* === Options Row === */
+.options-row {
   display: flex;
+  gap: 1.25rem;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  margin-bottom: 1.5rem;
 }
 
-.chip-group label {
-  display: inline-block;
-  margin: 0;
-}
-
-.chip-group input[type="checkbox"] { display: none; }
-
-.chip-group span {
-  display: inline-block;
-  padding: 0.3rem 0.7rem;
-  border-radius: 6px;
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 0.8rem;
-  font-family: monospace;
-  background: #0e0e1a;
-  border: 1px solid #2a2a4a;
   color: #6a6a90;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
-.chip-group input:checked + span {
-  background: #2a1a30;
-  border-color: #e94560;
-  color: #e94560;
+.toggle input { display: none; }
+
+.toggle .switch {
+  width: 36px;
+  height: 20px;
+  background: #1a1a35;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s;
 }
 
-.btn {
-  width: 100%;
-  padding: 0.65rem 1rem;
-  background: #e94560;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
+.toggle .switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: #555;
+  border-radius: 50%;
+  transition: all 0.2s;
 }
 
-.btn:hover { background: #d63050; }
+.toggle input:checked + .switch {
+  background: #1a3a3a;
+  border-color: #40c8c4;
+}
+
+.toggle input:checked + .switch::after {
+  left: 18px;
+  background: #40c8c4;
+}
 
 /* === Output === */
-.output-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .output-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 0.75rem;
 }
 
 .output-header h3 {
@@ -142,6 +133,18 @@
 .copy-btn:hover { border-color: #e94560; color: #e94560; }
 .copy-btn.copied { border-color: #40c057; color: #40c057; }
 
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  font-size: 0.8rem;
+  color: #555580;
+  margin-bottom: 0.75rem;
+}
+
+.stats b { color: #e94560; }
+.stats .sep { color: #2a2a4a; }
+
 #output {
   background: #0e0e1a;
   border: 1px solid #2a2a4a;
@@ -156,17 +159,6 @@
   tab-size: 2;
   min-height: 300px;
 }
-
-.stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  font-size: 0.8rem;
-  color: #555580;
-}
-
-.stats b { color: #e94560; }
-.stats .sep { color: #2a2a4a; }
 </style>
 </head>
 <body>
@@ -178,85 +170,61 @@
 
 <main>
   <h1>Container Query Generator</h1>
-  <p class="subtitle">Generates container queries for any pattern/gap/min-width combination.</p>
+  <p class="subtitle">Generates container queries for any combination of schemas, gaps and min-widths.</p>
 
-  <div class="generator">
-    <!-- Config Panel -->
-    <div class="panel">
-      <h3>Configuration</h3>
-
-      <div class="field">
-        <label>Pattern (column cascade, comma-separated)</label>
-        <input type="text" id="pattern" value="6,3,2,1">
-      </div>
-
-      <div class="field">
-        <label>Class name (e.g. fg-6321)</label>
-        <input type="text" id="className" value="fg-6321">
-      </div>
-
-      <div class="field">
-        <label>Gaps (px)</label>
-        <div class="chip-group" id="gapChips">
-          <label><input type="checkbox" value="5"><span>5</span></label>
-          <label><input type="checkbox" value="10" checked><span>10</span></label>
-          <label><input type="checkbox" value="20" checked><span>20</span></label>
-          <label><input type="checkbox" value="40" checked><span>40</span></label>
-          <label><input type="checkbox" value="60"><span>60</span></label>
-          <label><input type="checkbox" value="80"><span>80</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Min-widths (px)</label>
-        <div class="chip-group" id="minChips">
-          <label><input type="checkbox" value="100" checked><span>100</span></label>
-          <label><input type="checkbox" value="150"><span>150</span></label>
-          <label><input type="checkbox" value="200" checked><span>200</span></label>
-          <label><input type="checkbox" value="250"><span>250</span></label>
-          <label><input type="checkbox" value="300" checked><span>300</span></label>
-          <label><input type="checkbox" value="400"><span>400</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Include base styles?</label>
-        <select id="includeBase">
-          <option value="yes">Yes — complete CSS</option>
-          <option value="no">No — container queries only</option>
-        </select>
-      </div>
-
-      <button class="btn" onclick="generate()">Generate CSS</button>
+  <!-- Config Bar -->
+  <div class="config-bar">
+    <div class="field">
+      <label>FlexGrid Prefix</label>
+      <input type="text" id="prefix" value="fg">
     </div>
-
-    <!-- Output -->
-    <div class="output-wrap">
-      <div class="output-header">
-        <h3>Generated CSS</h3>
-        <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
-      </div>
-      <div class="stats" id="stats"></div>
-      <div id="output"></div>
+    <div class="field">
+      <label>Flex Schemas</label>
+      <input type="text" id="schemas" value="6321" placeholder="6321,421,31">
+    </div>
+    <div class="field">
+      <label>Gap Variants</label>
+      <input type="text" id="gaps" value="5,10,20,40,60">
+    </div>
+    <div class="field">
+      <label>Min-Width Variants</label>
+      <input type="text" id="mins" value="100,200,300,400">
     </div>
   </div>
+
+  <!-- Options -->
+  <div class="options-row">
+    <label class="toggle">
+      <input type="checkbox" id="includeBase" checked>
+      <span class="switch"></span>
+      Include base styles
+    </label>
+  </div>
+
+  <!-- Output -->
+  <div class="output-header">
+    <h3>Generated CSS</h3>
+    <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div id="output"></div>
 </main>
 
 <script>
-function getCheckedValues(id) {
-  return [...document.querySelectorAll('#' + id + ' input:checked')].map(c => Number(c.value));
+function parseCSV(str) {
+  return str.split(',').map(s => s.trim()).filter(Boolean);
+}
+
+function parseSchema(str) {
+  // "6321" → [6,3,2,1], "421" → [4,2,1]
+  return [...str].map(Number).filter(n => n > 0);
 }
 
 function gzipSize(str) {
-  // DEFLATE estimation: measure redundancy via compression ratio heuristic
-  // Container queries are highly repetitive, so they compress very well.
-  // We simulate this by counting unique vs repeated patterns.
   const raw = new TextEncoder().encode(str);
   const rawLen = raw.length;
-
   if (rawLen === 0) return 0;
 
-  // Byte frequency entropy estimation
   const freq = new Uint32Array(256);
   for (const b of raw) freq[b]++;
 
@@ -267,23 +235,18 @@ function gzipSize(str) {
     entropy -= p * Math.log2(p);
   }
 
-  // Entropy gives bits per byte. DEFLATE also exploits repeated substrings,
-  // so actual compression is better than pure entropy. Apply a factor for
-  // the LZ77 back-reference gain on repetitive CSS.
   const entropyRatio = entropy / 8;
-  const lz77Factor = 0.75; // CSS container queries are very repetitive
-  const estimated = Math.ceil(rawLen * entropyRatio * lz77Factor) + 20; // +20 for gzip header/footer
-
-  return Math.max(estimated, 20);
+  const lz77Factor = 0.75;
+  return Math.max(Math.ceil(rawLen * entropyRatio * lz77Factor) + 20, 20);
 }
 
 function minifyCSS(css) {
   return css
-    .replace(/\/\*[\s\S]*?\*\//g, '')  // remove comments
-    .replace(/\n/g, '')                 // remove newlines
-    .replace(/\s{2,}/g, ' ')           // collapse whitespace
-    .replace(/\s*([{}:;,>*])\s*/g, '$1') // remove space around syntax chars
-    .replace(/;}/g, '}')               // remove last semicolons
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\n/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\s*([{}:;,>*])\s*/g, '$1')
+    .replace(/;}/g, '}')
     .trim();
 }
 
@@ -293,14 +256,16 @@ function formatKB(bytes) {
 }
 
 function generate() {
-  const steps = document.getElementById('pattern').value.split(',').map(s => Number(s.trim())).filter(n => n > 0);
-  const name = document.getElementById('className').value.trim() || 'fg-6321';
-  const gaps = getCheckedValues('gapChips');
-  const mins = getCheckedValues('minChips');
-  const includeBase = document.getElementById('includeBase').value === 'yes';
+  const prefix = document.getElementById('prefix').value.trim() || 'fg';
+  const schemaStrs = parseCSV(document.getElementById('schemas').value);
+  const gaps = parseCSV(document.getElementById('gaps').value).map(Number).filter(n => n > 0);
+  const mins = parseCSV(document.getElementById('mins').value).map(Number).filter(n => n > 0);
+  const includeBase = document.getElementById('includeBase').checked;
 
-  if (steps.length < 2 || gaps.length === 0 || mins.length === 0) {
-    document.getElementById('output').textContent = '/* Need at least 2 pattern steps, 1 gap and 1 min-width */';
+  const schemas = schemaStrs.map(s => ({ raw: s, steps: parseSchema(s) })).filter(s => s.steps.length >= 2);
+
+  if (schemas.length === 0 || gaps.length === 0 || mins.length === 0) {
+    document.getElementById('output').textContent = '/* Need at least 1 schema (2+ digits), 1 gap and 1 min-width */';
     document.getElementById('stats').innerHTML = '';
     return;
   }
@@ -309,56 +274,67 @@ function generate() {
 
   if (includeBase) {
     lines.push('/* === Flex Grid CSS === */');
-    lines.push('.fg { display: flex; justify-content: center; flex-wrap: wrap; container-type: inline-size; gap: var(--gap, 0px); }');
-    lines.push('.fg > * { --items: 1; width: max(var(--min, 0px), calc(100% / var(--items) - (var(--items) - 1) * var(--gap, 0px) / var(--items))); max-width: 100%; }');
+    lines.push('.' + prefix + ' { display: flex; justify-content: center; flex-wrap: wrap; container-type: inline-size; gap: var(--gap, 0px); }');
+    lines.push('.' + prefix + ' > * { --items: 1; width: max(var(--min, 0px), calc(100% / var(--items) - (var(--items) - 1) * var(--gap, 0px) / var(--items))); max-width: 100%; }');
     lines.push('');
-    lines.push('.' + name + ' > * { --items: ' + steps[0] + '; }');
+
+    for (const schema of schemas) {
+      lines.push('.' + prefix + '-' + schema.raw + ' > * { --items: ' + schema.steps[0] + '; }');
+    }
     lines.push('');
 
     for (const g of gaps) {
-      lines.push('.fg-gap' + g + ' { --gap: ' + g + 'px; }');
+      lines.push('.' + prefix + '-gap' + g + ' { --gap: ' + g + 'px; }');
     }
     lines.push('');
 
     for (const m of mins) {
-      lines.push('.fg-min' + m + ' > * { --min: ' + m + 'px; }');
+      lines.push('.' + prefix + '-min' + m + ' > * { --min: ' + m + 'px; }');
     }
     lines.push('');
   }
 
-  // Collect all breakpoints
-  const entries = [];
-  for (let i = 0; i < steps.length - 1; i++) {
-    const fromCols = steps[i];
-    const toCols = steps[i + 1];
+  let totalQueries = 0;
 
-    for (const gap of gaps) {
-      for (const min of mins) {
-        const bp = fromCols * min + (fromCols - 1) * gap - 1;
-        entries.push({ bp, gap, min, toCols, fromCols });
+  for (const schema of schemas) {
+    const name = prefix + '-' + schema.raw;
+    const steps = schema.steps;
+
+    if (schemas.length > 1 || includeBase) {
+      lines.push('/* === ' + name + ' (' + steps.join(' -> ') + ') === */');
+    }
+
+    const entries = [];
+    for (let i = 0; i < steps.length - 1; i++) {
+      const fromCols = steps[i];
+      const toCols = steps[i + 1];
+
+      for (const gap of gaps) {
+        for (const min of mins) {
+          const bp = fromCols * min + (fromCols - 1) * gap - 1;
+          entries.push({ bp, gap, min, toCols, fromCols });
+        }
       }
     }
-  }
 
-  // Sort by breakpoint descending
-  entries.sort((a, b) => b.bp - a.bp);
+    entries.sort((a, b) => b.bp - a.bp);
 
-  // Group by transition for comments
-  let lastTransition = '';
-  let queryCount = 0;
-
-  for (const e of entries) {
-    const transition = e.fromCols + ' -> ' + e.toCols;
-    if (transition !== lastTransition) {
-      if (lastTransition) lines.push('');
-      lines.push('/* ' + transition + ' */');
-      lastTransition = transition;
+    let lastTransition = '';
+    for (const e of entries) {
+      const transition = e.fromCols + ' -> ' + e.toCols;
+      if (transition !== lastTransition) {
+        if (lastTransition) lines.push('');
+        lines.push('/* ' + transition + ' */');
+        lastTransition = transition;
+      }
+      lines.push('@container (max-inline-size: ' + e.bp + 'px) { .' + name + '.' + prefix + '-gap' + e.gap + '.' + prefix + '-min' + e.min + ' > * { --items: ' + e.toCols + '; } }');
+      totalQueries++;
     }
-    lines.push('@container (max-inline-size: ' + e.bp + 'px) { .' + name + '.fg-gap' + e.gap + '.fg-min' + e.min + ' > * { --items: ' + e.toCols + '; } }');
-    queryCount++;
+
+    lines.push('');
   }
 
-  const cssText = lines.join('\n');
+  const cssText = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
   const minified = minifyCSS(cssText);
   const rawBytes = new TextEncoder().encode(cssText).length;
   const minBytes = new TextEncoder().encode(minified).length;
@@ -366,10 +342,10 @@ function generate() {
 
   document.getElementById('output').textContent = cssText;
   document.getElementById('stats').innerHTML =
-    '<b>' + queryCount + '</b> container queries' +
+    (schemas.length > 1 ? '<b>' + schemas.length + '</b> schemas <span class="sep">|</span> ' : '') +
+    '<b>' + totalQueries + '</b> container queries' +
     ' <span class="sep">|</span> ' +
-    gaps.length + ' gaps &times; ' + mins.length + ' mins &times; ' +
-    (steps.length - 1) + ' transitions' +
+    gaps.length + ' gaps &times; ' + mins.length + ' mins' +
     ' <span class="sep">|</span> ' +
     '<b>' + formatKB(rawBytes) + '</b> raw' +
     ' <span class="sep">|</span> ' +
@@ -390,11 +366,9 @@ function copyOutput(btn) {
   });
 }
 
-// Generate on load
 generate();
 
-// Auto-regenerate on any config change
-document.querySelectorAll('.panel input, .panel select').forEach(el => {
+document.querySelectorAll('input').forEach(el => {
   el.addEventListener('change', generate);
   el.addEventListener('input', generate);
 });
