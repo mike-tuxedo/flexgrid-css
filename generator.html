@@ -206,8 +206,10 @@
   <!-- Output -->
   <div class="output-header">
     <h3>Generated CSS</h3>
-    <button class="copy-btn" onclick="copyOutput(this, false)">Copy</button>
-    <button class="copy-btn" onclick="copyOutput(this, true)">Copy minified</button>
+    <div style="display:flex;gap:0.5rem">
+      <button class="copy-btn" onclick="copyOutput(this, false)">Copy</button>
+      <button class="copy-btn" onclick="copyOutput(this, true)">Copy minified</button>
+    </div>
   </div>
   <div class="stats" id="stats"></div>
   <div id="output"></div>
